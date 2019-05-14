@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Upload</title>
+<style>
+
+</style>
+</head>
+<body>
+    <input type="file" name="file" id="image" value="" multiple="multiplt" placeholder="选择影像">
+    <input type="button" onclick="postData();" value="提交" name="">
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+    function postData(){
+        var formData = new FormData();
+        var filrArr = $("#image")[0].files;
+        for(var i = 0; i < filrArr.length; i++){
+            formData.append("file", filrArr[i]);
+        }
+        $.ajax({
+            url: 'http://127.0.0.1:5000/upload', /*接口域名地址*/
+            type: 'post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success:function(res){
+                console.log(res.data);
+                if(res.data["code"]=="succ"){
+                    alert('成功');
+                }else if(res.data["code"]=="err"){
+                    alert('失败');
+                }else{
+                    console.log(res);
+                }
+            }
+        })
+    }
+</script>
+</html>

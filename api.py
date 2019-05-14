@@ -2,9 +2,11 @@ from flask import Flask
 from flask_restful import Resource, Api, reqparse
 import werkzeug, os
 
-app = Flask(__name__)
+app = Flask(__name__, 
+            static_url_path='', 
+            static_folder='static')
 api = Api(app)
-UPLOAD_FOLDER = 'static/img'
+UPLOAD_FOLDER = 'static/upload_img'
 parser = reqparse.RequestParser()
 parser.add_argument('file',type=werkzeug.datastructures.FileStorage, location='files')
 
@@ -25,9 +27,9 @@ class ImageUpload(Resource):
                     'status':'error'
                 }
         image = data['file']
+        print(image.name)
 
         if image:
-            print(image.name)
             filename = 'your_image.png'
             image.save(os.path.join(UPLOAD_FOLDER, filename))
             return {
