@@ -12,6 +12,7 @@
 <body>
     <input type="file" name="file" id="image" value="" multiple="multiplt" placeholder="选择影像">
     <input type="button" onclick="postData();" value="提交" name="">
+    <div id="result"></div>
 </body>
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript">
@@ -28,14 +29,16 @@
             contentType: false,
             processData: false,
             success:function(res){
-                console.log(res.data);
-                if(res.data["code"]=="succ"){
-                    alert('成功');
-                }else if(res.data["code"]=="err"){
-                    alert('失败');
-                }else{
-                    console.log(res);
-                }
+                console.log(res.payload);
+                var result = res.payload;
+                result.forEach(url => {
+                    var img = new Image();
+                    img.width = 200;
+                    img.height = 200;
+                    img.src = window.location.origin + url;
+                    console.log(url, img)
+                    $('#result').append(img)
+                });
             }
         })
     }
